@@ -6,16 +6,16 @@ const RESOURCES = {
   "assets/AssetManifest.json": "2efbb41d7877d10aac9d091f58ccd7b9",
 "assets/FontManifest.json": "01700ba55b08a6141f33e168c4a6c22f",
 "assets/fonts/MaterialIcons-Regular.ttf": "56d3ffdef7a25659eab6a68a3fbfaf16",
-"assets/NOTICES": "ab7fc03a3d1211251c25853b0e115ece",
+"assets/NOTICES": "b71ee56616a32a58f350188d4ad0d3f7",
 "assets/packages/cupertino_icons/assets/CupertinoIcons.ttf": "115e937bb829a890521f72d2e664b632",
 "favicon.png": "f03e898aa32662847536df9ba4b5f280",
 "icons/Icon-192.png": "38ff1a29e149761d9381832a6ce0841f",
 "icons/Icon-200.png": "0db81ed1c95199390395007079613f1b",
 "icons/Icon-256.png": "8c612c3b558d564154473f3e6b77a7c5",
 "icons/Icon-512.png": "17c40e9fe16621ed09b0d5a1afbdbc7f",
-"index.html": "0fcdcf12347884d5f6f9452e625d9482",
-"/": "0fcdcf12347884d5f6f9452e625d9482",
-"main.dart.js": "248037e38c77b96706b7d6d1897fc3ae",
+"index.html": "f1eede26f113379d1352651590a01be6",
+"/": "f1eede26f113379d1352651590a01be6",
+"main.dart.js": "fd34052105fe6dfd95792bd62de39663",
 "manifest.json": "e14919d706af37f5b855881f7344233f"
 };
 
@@ -25,7 +25,7 @@ const CORE = [
   "/",
 "main.dart.js",
 "index.html",
-"assets/LICENSE",
+"assets/NOTICES",
 "assets/AssetManifest.json",
 "assets/FontManifest.json"];
 
@@ -107,7 +107,7 @@ self.addEventListener("fetch", (event) => {
   if (event.request.url == origin || event.request.url.startsWith(origin + '/#')) {
     key = '/';
   }
-  // If the URL is not the the RESOURCE list, skip the cache.
+  // If the URL is not the RESOURCE list, skip the cache.
   if (!RESOURCES[key]) {
     return event.respondWith(fetch(event.request));
   }
@@ -130,11 +130,11 @@ self.addEventListener("fetch", (event) => {
 self.addEventListener('message', (event) => {
   // SkipWaiting can be used to immediately activate a waiting service worker.
   // This will also require a page refresh triggered by the main worker.
-  if (event.message == 'skipWaiting') {
+  if (event.data === 'skipWaiting') {
     return self.skipWaiting();
   }
 
-  if (event.message = 'downloadOffline') {
+  if (event.message === 'downloadOffline') {
     downloadOffline();
   }
 });
@@ -154,8 +154,8 @@ async function downloadOffline() {
   }
   for (var resourceKey in Object.keys(RESOURCES)) {
     if (!currentContent[resourceKey]) {
-      resources.add(resourceKey);
+      resources.push(resourceKey);
     }
   }
-  return Cache.addAll(resources);
+  return contentCache.addAll(resources);
 }
