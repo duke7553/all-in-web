@@ -15,7 +15,7 @@ const RESOURCES = {
 "icons/Icon-512.png": "0626ccb5bade071c8b64e2811d43b5e4",
 "index.html": "f1eede26f113379d1352651590a01be6",
 "/": "f1eede26f113379d1352651590a01be6",
-"main.dart.js": "3f7de9cb991fe9180037486a22265a8b",
+"main.dart.js": "7ffb1d6584818e9b01ad472faa1073a2",
 "manifest.json": "d3ada8acae162e7d5d063e01d9287b7f"
 };
 
@@ -34,7 +34,8 @@ self.addEventListener("install", (event) => {
   return event.waitUntil(
     caches.open(TEMP).then((cache) => {
       // Provide a no-cache param to ensure the latest version is downloaded.
-      return cache.addAll(CORE.map((value) => new Request(value, {'cache': 'no-cache'})));
+      cache.addAll(CORE.map((value) => new Request(value, {'cache': 'no-cache'})));
+      return cache;
     })
   );
 });
